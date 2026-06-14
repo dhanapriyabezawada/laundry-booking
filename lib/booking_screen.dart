@@ -36,12 +36,8 @@ class BookingScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
   onPressed: () {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Booking Successful"),
-      ),
-    );
-  },
+  Navigator.pop(context, true);
+},
   child: const Text("Confirm Booking"),
 ),
           ],

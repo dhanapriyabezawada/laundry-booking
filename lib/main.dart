@@ -21,8 +21,32 @@ class LaundryApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, dynamic>> machines = [
+  {
+    "name": "WM1",
+    "status": "Running - 20 min left",
+    "color": Colors.red,
+  },
+  {
+    "name": "WM2",
+    "status": "Free",
+    "color": Colors.green,
+  },
+  {
+    "name": "WM3",
+    "status": "Reserved",
+    "color": Colors.orange,
+  },
+];
+
 
   Widget machineCard(
   BuildContext context,
@@ -59,8 +83,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
            ElevatedButton(
-onPressed: () {
-  Navigator.push(
+onPressed: () async {
+  final result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) => BookingScreen(
@@ -69,6 +93,17 @@ onPressed: () {
       ),
     ),
   );
+
+ if (result == true) {
+  setState(() {
+    for (var machine in machines) {
+      if (machine["name"] == name) {
+        machine["status"] = "Reserved";
+        machine["color"] = Colors.orange;
+      }
+    }
+  });
+}
 },
   child: const Text("Book"),
 ),
@@ -86,23 +121,14 @@ onPressed: () {
       ),
       body: ListView(
         children: [
-          machineCard(
-  context,
-  "WM1",
-  "Running - 20 min left",
-  Colors.red,
-),machineCard(
-  context,
-  "WM2",
-  "Free",
-  Colors.green,
-),
-          machineCard(
-  context,
-  "WM3",
-  "Reserved",
-  Colors.orange,
-),
+          for (var machine in machines)
+  machineCard(
+    context,
+    machine["name"],
+    machine["status"],
+    machine["color"],
+  ),
+
         ],
       ),
     );

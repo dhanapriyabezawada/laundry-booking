@@ -111,12 +111,18 @@ onPressed: () async {
     ),
   );
 
- if (result == true) {
+if (result == true) {
   setState(() {
     for (var machine in machines) {
       if (machine["name"] == name) {
-        machine["status"] = "Reserved";
-        machine["color"] = Colors.orange;
+
+        if (machine["status"] == "Free") {
+          machine["status"] = "Reserved";
+          machine["color"] = Colors.orange;
+        } else {
+          machine["queue"]++;
+        }
+
       }
     }
   });

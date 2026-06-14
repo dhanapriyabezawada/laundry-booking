@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'booking_screen.dart';
 
 void main() {
   runApp(const LaundryApp());
@@ -24,10 +25,11 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Widget machineCard(
-    String name,
-    String status,
-    Color color,
-  ) {
+  BuildContext context,
+  String name,
+  String status,
+  Color color,
+) {
     return Card(
       margin: const EdgeInsets.all(10),
       elevation: 4,
@@ -56,10 +58,20 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("Book"),
-            ),
+           ElevatedButton(
+onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => BookingScreen(
+        machineName: name,
+        status: status,
+      ),
+    ),
+  );
+},
+  child: const Text("Book"),
+),
           ],
         ),
       ),
@@ -75,20 +87,22 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         children: [
           machineCard(
-            "WM1",
-            "Running - 20 min left",
-            Colors.red,
-          ),
+  context,
+  "WM1",
+  "Running - 20 min left",
+  Colors.red,
+),machineCard(
+  context,
+  "WM2",
+  "Free",
+  Colors.green,
+),
           machineCard(
-            "WM2",
-            "Free",
-            Colors.green,
-          ),
-          machineCard(
-            "WM3",
-            "Reserved",
-            Colors.orange,
-          ),
+  context,
+  "WM3",
+  "Reserved",
+  Colors.orange,
+),
         ],
       ),
     );

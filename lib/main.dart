@@ -30,30 +30,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> machines = [
+ {
+  "name": "WM1",
+  "status": "Running - 20 min left",
+  "color": Colors.red,
+  "queue": 0,
+},
   {
-    "name": "WM1",
-    "status": "Running - 20 min left",
-    "color": Colors.red,
-  },
+  "name": "WM2",
+  "status": "Free",
+  "color": Colors.green,
+  "queue": 0,
+},
   {
-    "name": "WM2",
-    "status": "Free",
-    "color": Colors.green,
-  },
-  {
-    "name": "WM3",
-    "status": "Reserved",
-    "color": Colors.orange,
-  },
+  "name": "WM3",
+  "status": "Reserved",
+  "color": Colors.orange,
+  "queue": 0,
+},
 ];
 
 
-  Widget machineCard(
+ Widget machineCard(
   BuildContext context,
   String name,
   String status,
   Color color,
-) {
+  int queue,
+)
+ {
     return Card(
       margin: const EdgeInsets.all(10),
       elevation: 4,
@@ -78,7 +83,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(status),
+                  Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(status),
+    const SizedBox(height: 4),
+    Text(
+      "Queue: $queue",
+      style: const TextStyle(
+        fontSize: 12,
+      ),
+    ),
+  ],
+),
                 ],
               ),
             ),
@@ -122,12 +139,13 @@ onPressed: () async {
       body: ListView(
         children: [
           for (var machine in machines)
-  machineCard(
-    context,
-    machine["name"],
-    machine["status"],
-    machine["color"],
-  ),
+ machineCard(
+  context,
+  machine["name"],
+  machine["status"],
+  machine["color"],
+  machine["queue"],
+),
 
         ],
       ),

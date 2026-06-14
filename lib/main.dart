@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "remainingTime": 20,
       "color": Colors.red,
       "queue": 0,
-      "waitTime": 20,
+      
     },
     {
       "name": "WM2",
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "remainingTime": 0,
       "color": Colors.green,
       "queue": 0,
-      "waitTime": 0,
+      
     },
     {
       "name": "WM3",
@@ -53,19 +53,19 @@ class _HomeScreenState extends State<HomeScreen> {
       "remainingTime": 20,
       "color": Colors.orange,
       "queue": 0,
-      "waitTime": 20,
+      
     },
   ];
 
   Widget machineCard(
-    BuildContext context,
-    String name,
-    String status,
-    int remainingTime,
-    Color color,
-    int queue,
-    int waitTime,
-  ) {
+  BuildContext context,
+  String name,
+  String status,
+  int remainingTime,
+  Color color,
+  int queue,
+)
+  {
     return Card(
       margin: const EdgeInsets.all(10),
       elevation: 4,
@@ -93,7 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text("Status: $status"),
                   Text("Remaining Time: $remainingTime min"),
                   Text("Queue: $queue"),
-                  Text("Estimated Wait: $waitTime min"),
+                  Text(
+  "Estimated Wait: ${remainingTime + (queue * 20)} min",
+),
+              
                 ],
               ),
             ),
@@ -148,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
               machine["remainingTime"],
               machine["color"],
               machine["queue"],
-              machine["waitTime"],
+          
             ),
         ],
       ),

@@ -111,15 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 );
-
-                if (result == "booked") {
-                  ScaffoldMessenger.of(context).showSnackBar(
-  SnackBar(
-    content: Text(
-      "Booking Successful",
-    ),
-  ),
-);
+if (result == "booked") {
+  int queuePosition = 0;
+               
                   setState(() {
                     for (var machine in machines) {
                       if (machine["name"] == name) {
@@ -127,11 +121,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           machine["status"] = "Reserved";
                           machine["color"] = Colors.orange;
                         } else {
+                          queuePosition = machine["queue"] + 1;
                           machine["queue"]++;
                         }
                       }
                     }
                   });
+                  if (queuePosition > 0) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        "Booking Successful\nQueue Position: #$queuePosition",
+      ),
+    ),
+  );
+}
                 }
               },
               child: const Text("Book"),

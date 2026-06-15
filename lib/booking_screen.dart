@@ -36,7 +36,7 @@ class BookingScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
   onPressed: () {
-  Navigator.pop(context, true);
+  Navigator.pop(context, "booked");
 },
   child: const Text("Confirm Booking"),
 ),

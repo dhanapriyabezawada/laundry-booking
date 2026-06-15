@@ -112,7 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
 
-                if (result == true) {
+                if (result == "booked") {
+                  ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      "Booking Successful",
+    ),
+  ),
+);
                   setState(() {
                     for (var machine in machines) {
                       if (machine["name"] == name) {

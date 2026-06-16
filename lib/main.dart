@@ -106,11 +106,11 @@ Future<void> loadMachines() async {
         };
       }).toList();
     });
-
   } catch (e) {
     print("Firestore Error: $e");
   }
 }
+
 @override
 void dispose() {
   countdownTimer?.cancel();

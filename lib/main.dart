@@ -81,11 +81,11 @@ class _LaundryScreenState extends State<LaundryScreen> {
     },
   ];
 Timer? countdownTimer;
+
 @override
 void initState() {
   super.initState();
   loadMachines();
-  startCountdown();
 }
 Future<void> loadMachines() async {
   try {

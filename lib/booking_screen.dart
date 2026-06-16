@@ -43,7 +43,16 @@ class BookingScreen extends StatelessWidget {
     'status': 'Booked',
     'bookingTime': Timestamp.now(),
   });
-
+final snapshot = await FirebaseFirestore.instance
+    .collection('Machines')
+    .where('Name', isEqualTo: machineName)
+    .get();
+    print(snapshot.docs.length);
+ for (var doc in snapshot.docs) {
+  await doc.reference.update({
+    'status': 'Reserved',
+  });
+}
   Navigator.pop(context, "booked");
 },
               child: const Text("Confirm Booking"),

@@ -1,13 +1,27 @@
 
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'booking_screen.dart';
+import 'login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'home_screen.dart';
+import 'dashboard_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
-  runApp(const LaundryApp());
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
 }
 
-class LaundryApp extends StatelessWidget {
-  const LaundryApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +31,28 @@ class LaundryApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+    ? const DashboardScreen()
+    : const LoginScreen(),
+    routes: {
+  '/dashboard': (context) => const DashboardScreen(),
+  '/home': (context) => const HomeScreen(),
+  '/laundry': (context) => const LaundryScreen(),
+},
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+// Replace the rest of your existing file below this line unchanged.
+
+class LaundryScreen extends StatefulWidget {
+  const LaundryScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<LaundryScreen> createState() => _LaundryScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _LaundryScreenState extends State<LaundryScreen> {
   List<Map<String, dynamic>> machines = [
     {
       "name": "WM1",
@@ -56,7 +79,37 @@ class _HomeScreenState extends State<HomeScreen> {
       
     },
   ];
+Timer? countdownTimer;
+@override
+void initState() {
+  super.initState();
+  startCountdown();
+}
+@override
+void dispose() {
+  countdownTimer?.cancel();
+  super.dispose();
+}
+void startCountdown() {
+  countdownTimer = Timer.periodic(
+    const Duration(seconds: 1),
+    (timer) {
+      setState(() {
+        for (var machine in machines) {
+          if (machine["remainingTime"] > 0) {
+  machine["remainingTime"]--;
+}
 
+if (machine["remainingTime"] == 0 &&
+    machine["queue"] == 0) {
+  machine["status"] = "Free";
+  machine["color"] = Colors.green;
+}
+        }
+      });
+    },
+  );
+}
   Widget machineCard(
   BuildContext context,
   String name,

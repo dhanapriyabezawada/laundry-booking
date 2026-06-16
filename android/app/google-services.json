@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "152666881394",
+    "project_id": "pg-laundry",
+    "storage_bucket": "pg-laundry.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152666881394:android:05820cdd89bc099c61b1eb",
+        "android_client_info": {
+          "package_name": "com.example.laundry_booking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkbIIYq6rw1HSxJDwxo8xJMmAmalS1_xc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

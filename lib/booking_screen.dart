@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class BookingScreen extends StatelessWidget {
   final String machineName;
   final String status;
@@ -35,9 +35,17 @@ class BookingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, "booked");
-              },
+              onPressed: () async {
+  await FirebaseFirestore.instance
+      .collection('bookings')
+      .add({
+    'machineName': machineName,
+    'status': 'Booked',
+    'bookingTime': Timestamp.now(),
+  });
+
+  Navigator.pop(context, "booked");
+},
               child: const Text("Confirm Booking"),
             ),
           ],

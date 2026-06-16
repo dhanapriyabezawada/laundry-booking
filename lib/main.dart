@@ -95,17 +95,17 @@ Future<void> loadMachines() async {
 
     print("Machines found: ${snapshot.docs.length}");
 
-    setState(() {
-      machines = snapshot.docs.map((doc) {
-        return {
-          "name": doc["Name"],
-          "status": doc["status"],
-          "remainingTime": 0,
-          "color": Colors.green,
-          "queue": 0,
-        };
-      }).toList();
-    });
+   setState(() {
+  machines = snapshot.docs.map((doc) {
+    return {
+      "name": doc["Name"],
+      "status": doc["status"],
+      "remainingTime": 0,
+      "color": Colors.green,
+      "queue": 0,
+    };
+  }).toList();
+});
   } catch (e) {
     print("Firestore Error: $e");
   }

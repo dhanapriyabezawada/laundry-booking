@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'booking_screen.dart';
 import 'login_screen.dart';
@@ -83,7 +84,19 @@ Timer? countdownTimer;
 @override
 void initState() {
   super.initState();
+  loadMachines();
   startCountdown();
+}
+Future<void> loadMachines() async {
+  try {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('Machines')
+        .get();
+
+    print("Machines found: ${snapshot.docs.length}");
+  } catch (e) {
+    print("Firestore Error: $e");
+  }
 }
 @override
 void dispose() {

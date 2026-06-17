@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class BookingScreen extends StatelessWidget {
   final String machineName;
   final String status;
@@ -35,24 +36,37 @@ class BookingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () async {
+
+  
+onPressed: () async {
+final existingBookings = await FirebaseFirestore.instance
+    .collection('bookings')
+    .where('machineName', isEqualTo: machineName)
+    .get();
+
+final queuePosition = existingBookings.docs.length + 1;
   await FirebaseFirestore.instance
       .collection('bookings')
       .add({
     'machineName': machineName,
+    'userName': FirebaseAuth.instance.currentUser?.displayName,
+    'userEmail': FirebaseAuth.instance.currentUser?.email,
+    'queuePosition': queuePosition,
     'status': 'Booked',
     'bookingTime': Timestamp.now(),
   });
-final snapshot = await FirebaseFirestore.instance
-    .collection('Machines')
-    .where('Name', isEqualTo: machineName)
-    .get();
-    print(snapshot.docs.length);
- for (var doc in snapshot.docs) {
-  await doc.reference.update({
-    'status': 'Reserved',
-  });
-}
+
+  final snapshot = await FirebaseFirestore.instance
+      .collection('Machines')
+      .where('Name', isEqualTo: machineName)
+      .get();
+
+  for (var doc in snapshot.docs) {
+    await doc.reference.update({
+      'status': 'Reserved',
+    });
+  }
+
   Navigator.pop(context, "booked");
 },
               child: const Text("Confirm Booking"),

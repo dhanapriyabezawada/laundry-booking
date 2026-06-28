@@ -9,6 +9,7 @@ import 'firebase_options.dart';
 import 'home_screen.dart';
 import 'dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'my_bookings_screen.dart';
 
 
 Future<void> main() async {
@@ -228,9 +229,22 @@ if (result == "booked") {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Laundry Booking"),
-      ),
+     appBar: AppBar(
+  title: const Text("Laundry Booking"),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.book),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MyBookingsScreen(),
+          ),
+        );
+      },
+    ),
+  ],
+),
       body: ListView(
         children: [
           for (var machine in machines)

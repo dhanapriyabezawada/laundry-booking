@@ -36,15 +36,35 @@ class BookingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-
-  
 onPressed: () async {
-final existingBookings = await FirebaseFirestore.instance
-    .collection('bookings')
-    .where('machineName', isEqualTo: machineName)
-    .get();
 
-final queuePosition = existingBookings.docs.length + 1;
+  final currentUserEmail =
+      FirebaseAuth.instance.currentUser?.email;
+
+  final userBookings = await FirebaseFirestore.instance
+      .collection('bookings')
+      .where('userEmail', isEqualTo: currentUserEmail)
+      .where('status', isEqualTo: 'Booked')
+      .get();
+
+  if (userBookings.docs.isNotEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'You already have an active booking',
+        ),
+      ),
+    );
+    return;
+  }
+
+  final existingBookings = await FirebaseFirestore.instance
+      .collection('bookings')
+      .where('machineName', isEqualTo: machineName)
+      .get();
+
+  final queuePosition = existingBookings.docs.length + 1;
+
   await FirebaseFirestore.instance
       .collection('bookings')
       .add({
@@ -69,7 +89,8 @@ final queuePosition = existingBookings.docs.length + 1;
 
   Navigator.pop(context, "booked");
 },
-              child: const Text("Confirm Booking"),
+
+   child: const Text("Confirm Booking"),
             ),
           ],
         ),
